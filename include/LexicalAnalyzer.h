@@ -4,7 +4,6 @@
 #include <vector>
 #include <fstream>
 
-
 using T = std::pair<int, std::string>;
 
 // 符号表
@@ -45,14 +44,13 @@ const static std::map<std::string, int> symbol_table{
     {"IDN", 40},
     // INT
     {"INT", 50},
-    {"CR",  60},
-    {"LF",  61},
-    {"TAB",  62},
+    {"CR", 60},
+    {"LF", 61},
+    {"TAB", 62},
 };
 
 void showAll();
 int getSymCode(std::string);
-
 
 // 全局参数
 class LexicalAnalyzer
@@ -83,8 +81,9 @@ private:
     int toDigit(char);
     void scan(std::string);
     std::string getKeyWord(int);
+
 public:
     std::string readfile(std::string);
-    LexicalAnalyzer* process(std::string);
+    LexicalAnalyzer *process(std::string);
     void display();
 };

@@ -1,6 +1,5 @@
-#include <LexicalAnalyzer.h>
+#include "LexicalAnalyzer.h"
 #include <Logging.h>
-
 
 // 从符号表中查询对应的符号码,默认返回IDN码
 int getSymCode(std::string sym)
@@ -67,9 +66,9 @@ int LexicalAnalyzer::toDigit(char ch)
 }
 
 /*
-* 对当前字符串进行扫描
-* 每次扫描得到一个符号表中对应的符号，并以(syn, token)的形式存入result内
-*/ 
+ * 对当前字符串进行扫描
+ * 每次扫描得到一个符号表中对应的符号，并以(syn, token)的形式存入result内
+ */
 void LexicalAnalyzer::scan(std::string s)
 {
     if (s.at(this->index) == ' ')
@@ -85,7 +84,8 @@ void LexicalAnalyzer::scan(std::string s)
         // 1.判断字符是否为数字 -*[0-9]+
         if (isDigit(ch) || ch == '-')
         {
-            if(ch == '-'){
+            if (ch == '-')
+            {
                 this->token += '-';
                 this->index++;
             }
@@ -184,33 +184,41 @@ LexicalAnalyzer *LexicalAnalyzer::process(std::string s)
 void LexicalAnalyzer::display()
 {
     Log(DEBUG, "Display:");
-    FILE* fp = fopen("Lex.txt", "w");
+    FILE *fp = fopen("Lex.txt", "w");
     for (const auto &p : this->result)
     {
         std::string symbol = getKeyWord(p.first);
         Log(INFO, "( %2d, %s )\t<%s>", p.first, p.second.data(), symbol.data());
-        if(symbol != this->keyWord[5]){
+        if (symbol != this->keyWord[5])
+        {
             fprintf(fp, "%s\t<%s>\n", p.second.data(), symbol.data());
         }
     }
 }
 
 // 获取syn码对应的符号类型名称
-std::string LexicalAnalyzer::getKeyWord(int syn){
-    if(syn < 10){
+std::string LexicalAnalyzer::getKeyWord(int syn)
+{
+    if (syn < 10)
+    {
         return this->keyWord[0];
     }
-    else if(syn < 30){
+    else if (syn < 30)
+    {
         return this->keyWord[1];
     }
-    else if(syn < 40){
+    else if (syn < 40)
+    {
         return this->keyWord[2];
     }
-    else if(syn < 50){
+    else if (syn < 50)
+    {
         return this->keyWord[3];
     }
-    else if(syn < 60){
+    else if (syn < 60)
+    {
         return this->keyWord[4];
     }
-    else return this->keyWord[5];
+    else
+        return this->keyWord[5];
 }

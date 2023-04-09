@@ -184,7 +184,7 @@ LexicalAnalyzer *LexicalAnalyzer::process(std::string s)
 void LexicalAnalyzer::display()
 {
     FILE* fp = fopen("Lex.txt", "w");
-    for (const auto p : this->result)
+    for (const auto &p : this->result)
     {
         std::string symbol = getKeyWord(p.first);
         Log(INFO, "( %2d, %s )\t<%s>", p.first, p.second.data(), symbol.data());

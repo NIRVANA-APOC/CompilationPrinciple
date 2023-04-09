@@ -1,4 +1,6 @@
+# 使用C++17标准
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_FLAGS "-g -Wall -Wno-attributes -Wno-unused-variable")
 set(PROJECT_NAME MyProject)
 project(${PROJECT_NAME})
 file(GLOB_RECURSE DIR_SRC "src/*.cpp")

@@ -8,8 +8,7 @@
 using T = std::pair<int, std::string>;
 
 // 符号表
-#pragma region symbol_table
-const std::map<std::string, int> symbol_table{
+const static std::map<std::string, int> symbol_table{
     {"UNKNOWN", -4},
     {"END", -3},
     {"ERR", -2},
@@ -54,10 +53,8 @@ const std::map<std::string, int> symbol_table{
 void showAll();
 int getSymCode(std::string);
 
-#pragma endregion symbol_table
 
 // 全局参数
-#pragma reigon global_param
 class LexicalAnalyzer
 {
 private:
@@ -91,5 +88,3 @@ public:
     LexicalAnalyzer* process(std::string);
     void display();
 };
-
-#pragma endreigon global_param

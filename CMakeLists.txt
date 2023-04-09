@@ -1,0 +1,8 @@
+set(CMAKE_CXX_STANDARD 17)
+set(PROJECT_NAME MyProject)
+project(${PROJECT_NAME})
+file(GLOB_RECURSE DIR_SRC "src/*.cpp")
+include_directories("include")
+add_library(project_lib ${DIR_SRC})
+add_executable(main main.cpp)
+target_link_libraries(main project_lib)

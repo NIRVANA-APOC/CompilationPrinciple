@@ -4,11 +4,14 @@
 
 FILE* log_fp;
 
-int main(){
+int main(int argc, char** argv){
+    std::string filename{"test.cmm"};
+    if (argc == 2){
+        filename = argv[1];
+    }
     log_fp = fopen("run.log", "w");
-    Log(DEBUG, "this is a test");
     LexicalAnalyzer lex;
     showAll();
-    lex.process(lex.readfile("test.cmm"))->display();
+    lex.process(lex.readfile(filename))->display();
     fclose(log_fp);
 }

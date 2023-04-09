@@ -19,7 +19,7 @@ int getSymCode(std::string sym, std::string _default)
 // 打印符号表
 void showAll()
 {
-    Log(INFO, "Symbol Table: ");
+    Log(DEBUG, "Symbol Table: ");
     for (const auto &[s, i] : symbol_table)
     {
         Log(INFO, "%s\t\t%2d", s.data(), i);
@@ -183,6 +183,7 @@ LexicalAnalyzer *LexicalAnalyzer::process(std::string s)
 // 以指定格式打印result内的结果
 void LexicalAnalyzer::display()
 {
+    Log(DEBUG, "Display:");
     FILE* fp = fopen("Lex.txt", "w");
     for (const auto &p : this->result)
     {

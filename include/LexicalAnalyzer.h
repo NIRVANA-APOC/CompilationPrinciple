@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <fstream>
+#include <exception>
 
 using T = std::pair<int, std::string>;
 
@@ -86,4 +87,9 @@ public:
     std::string readfile(std::string);
     LexicalAnalyzer *process(std::string);
     void display();
+};
+
+enum errTable{
+    // 
+    UNKOWN, 
 };

@@ -199,12 +199,12 @@ void FirstFollowTable::displayFirst()
     std::cout << "---first---\n";
     for (auto n : _left)
     {
-        std::cout << n << ":\n";
+        printf("FIRST(%s): { ", n.data());
         for (auto t : first[n])
         {
             std::cout << t << ", ";
         }
-        std::cout << std::endl;
+        std::cout << " }" << std::endl;
     }
 }
 
@@ -213,12 +213,12 @@ void FirstFollowTable::displayFollow()
     std::cout << "---follow---\n";
     for (auto n : _left)
     {
-        std::cout << n << ":\n";
+        printf("FOLLOW(%s): { ", n.data());
         for (auto t : follow[n])
         {
             std::cout << t << ", ";
         }
-        std::cout << std::endl;
+        std::cout << " }" << std::endl;
     }
 }
 
@@ -234,16 +234,16 @@ void FirstFollowTable::showAll()
         }
         std::cout << std::endl;
     }
-    printf("Vts(%ld):\n", Vts.size());
+    printf("Vts(%ld): { ", Vts.size());
     for (auto t : Vts)
     {
         std::cout << t << " ";
     }
-    std::cout << std::endl;
-    printf("Vns(%ld):\n", Vns.size());
+    std::cout << " }" << std::endl;
+    printf("Vns(%ld): { ", Vns.size());
     for (auto n : Vns)
     {
         std::cout << n << " ";
     }
-    std::cout << std::endl;
+    std::cout << " }" << std::endl;
 }

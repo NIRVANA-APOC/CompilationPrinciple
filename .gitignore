@@ -1,4 +1,6 @@
 .vscode
 build
+test
+grammar.txt
 *.exe
 *.log

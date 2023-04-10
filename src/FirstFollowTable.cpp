@@ -3,17 +3,17 @@
 
 FirstFollowTable::FirstFollowTable(std::string filename)
 {
-    this->filename = filename;
-    std::fstream fin(this->filename);
+    this->_filename = filename;
+    std::fstream fin(this->_filename);
     std::string tmp;
-    this->index = 0;
+    this->_index = 0;
     while (getline(fin, tmp))
     {
-        this->index++;
+        this->_index++;
     }
     this->Vns.insert("#");
-    this->formula = new std::pair<std::string, std::vector<std::string>>[this->index];
-    this->index = 0;
+    this->formula = new std::pair<std::string, std::vector<std::string>>[this->_index];
+    this->_index = 0;
 }
 
 bool FirstFollowTable::isTerminalChar(const std::string &s)
@@ -33,14 +33,14 @@ void display(std::set<std::string> s)
 void FirstFollowTable::readExps()
 {
     std::string str;
-    std::ifstream fin(this->filename);
+    std::ifstream fin(this->_filename);
     if (!fin.is_open())
     {
-        Log(ERR, "file \"%s\" not found.", filename.data());
+        Log(ERR, "file \"%s\" not found.", _filename.data());
         return;
     }
     std::set<std::string> all_lit;
-    for (; getline(fin, str); this->index++)
+    for (; getline(fin, str); this->_index++)
     {
         if ((int)str.find("#") != -1)
         {
@@ -65,9 +65,9 @@ void FirstFollowTable::readExps()
                 break;
             }
         }
-        this->formula[index].first = str.substr(sta_pos, end_pos - sta_pos);
-        this->Vns.insert(formula[index].first);
-        this->_left.push_back(formula[index].first);
+        this->formula[_index].first = str.substr(sta_pos, end_pos - sta_pos);
+        this->Vns.insert(formula[_index].first);
+        this->_left.push_back(formula[_index].first);
 
         sta_pos = mid_pos + 2;
         str.append("\n");
@@ -84,7 +84,7 @@ void FirstFollowTable::readExps()
                     {
                         continue;
                     }
-                    this->formula[index].second.push_back(ns);
+                    this->formula[_index].second.push_back(ns);
                     all_lit.insert(ns);
                 }
             }
@@ -101,7 +101,7 @@ void FirstFollowTable::calFirst()
     while (pre != now)
     {
         pre = now;
-        for (int i = 0; i < index; i++)
+        for (int i = 0; i < _index; i++)
         {
             std::string str = formula[i].first;
             std::vector<std::string> element = formula[i].second;
@@ -150,7 +150,7 @@ void FirstFollowTable::calFollow()
     while (pre != now)
     {
         pre = now;
-        for (int i = 0; i < index; i++)
+        for (int i = 0; i < _index; i++)
         {
             std::string str = formula[i].first;
             std::vector<std::string> element = formula[i].second;
@@ -207,7 +207,7 @@ void FirstFollowTable::displayFirst()
     {
         _out.clear();
         _out += "FIRST(" + n + "): { ";
-        for (auto t : follow[n])
+        for (auto t : first[n])
         {
             _out += t + ", ";
         }
@@ -238,7 +238,7 @@ void FirstFollowTable::showAll()
     std::string _out;
 
     Log(INFO, "输入文法: ");
-    for (int i = 0; i < index; i++)
+    for (int i = 0; i < _index; i++)
     {
         _out.clear();
         _out += formula[i].first + " -> ";

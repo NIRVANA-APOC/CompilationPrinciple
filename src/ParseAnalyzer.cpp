@@ -11,3 +11,11 @@ void ParseAnalyzer::showAll(){
     fft->displayFirst();
     fft->displayFollow();
 }
+
+void ParseAnalyzer::initAnalyzerTable(){
+    for(auto ns: fft->Vns){
+        for(auto ts: fft->first[ns]){
+            
+        }
+    }
+}

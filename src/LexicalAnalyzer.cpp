@@ -2,7 +2,7 @@
 #include <Logging.h>
 
 // 从符号表中查询对应的符号码,默认返回IDN码
-int getSymCode(std::string sym)
+int getSymCode(const std::string sym)
 {
     auto res = symbol_table.find(sym);
     return (res == symbol_table.end()) ? (symbol_table.find("UNKNOWN")->second) : res->second;
@@ -46,40 +46,40 @@ std::string LexicalAnalyzer::readfile(std::string filename)
 }
 
 // 判断当前字符是否为字母
-bool LexicalAnalyzer::isLetter(char ch)
+bool LexicalAnalyzer::isLetter(char __ch)
 {
     return (
-        (ch >= 'a' && ch <= 'z') ||
-        (ch >= 'A' && ch <= 'Z'));
+        (__ch >= 'a' && __ch <= 'z') ||
+        (__ch >= 'A' && __ch <= 'Z'));
 }
 
 // 判断当前字符是否为数字
-bool LexicalAnalyzer::isDigit(char ch)
+bool LexicalAnalyzer::isDigit(char __ch)
 {
-    return (ch >= '0' && ch <= '9');
+    return (__ch >= '0' && __ch <= '9');
 }
 
 // 将当前字符转换成对应整型数字
-int LexicalAnalyzer::toDigit(char ch)
+int LexicalAnalyzer::toDigit(char __ch)
 {
-    return (ch - '0');
+    return (__ch - '0');
 }
 
 /*
  * 对当前字符串进行扫描
  * 每次扫描得到一个符号表中对应的符号，并以(syn, token)的形式存入result内
  */
-void LexicalAnalyzer::scan(std::string s)
+void LexicalAnalyzer::scan(std::string &s)
 {
-    if (s.at(this->index) == ' ')
+    if (s.at(this->__index) == ' ')
     {
         this->syn = getSymCode("SP");
-        this->index++;
+        this->__index++;
     }
     else
     {
         this->token.clear();
-        auto ch = s.at(this->index);
+        auto ch = s.at(this->__index);
 
         // 1.判断字符是否为数字 -*[0-9]+
         if (isDigit(ch) || ch == '-')
@@ -87,11 +87,11 @@ void LexicalAnalyzer::scan(std::string s)
             if (ch == '-')
             {
                 this->token += '-';
-                this->index++;
+                this->__index++;
             }
-            for (; isDigit(s.at(this->index)); this->index++)
+            for (; isDigit(s.at(this->__index)); this->__index++)
             {
-                this->token += s.at(this->index);
+                this->token += s.at(this->__index);
             }
             this->syn = getSymCode(this->token, "INT");
         }
@@ -99,19 +99,19 @@ void LexicalAnalyzer::scan(std::string s)
         else if (isLetter(ch) || ch == '_')
         {
             for (
-                auto ch = s.at(this->index);
+                auto ch = s.at(this->__index);
                 isLetter(ch) || isDigit(ch) || ch == '_';
-                this->index++, ch = s.at(this->index))
+                this->__index++, ch = s.at(this->__index))
             {
-                this->token += s.at(this->index);
+                this->token += s.at(this->__index);
             }
             this->syn = getSymCode(this->token, "IDN");
         }
         // 3.其余均按照运算符处理
         else
         {
-            this->token += s.at(this->index);
-            this->index++;
+            this->token += s.at(this->__index);
+            this->__index++;
             this->syn = getSymCode(this->token);
 
             switch (this->token[0])
@@ -120,19 +120,19 @@ void LexicalAnalyzer::scan(std::string s)
             case '<':
             case '>':
             case '!':
-                if (s.at(this->index) == '=')
+                if (s.at(this->__index) == '=')
                 {
-                    this->token += s.at(this->index);
-                    this->index++;
+                    this->token += s.at(this->__index);
+                    this->__index++;
                     this->syn = getSymCode(this->token);
                 }
                 break;
             case '&':
             case '|':
-                if (s.at(this->index) == this->token[0])
+                if (s.at(this->__index) == this->token[0])
                 {
-                    this->token += s.at(this->index);
-                    this->index++;
+                    this->token += s.at(this->__index);
+                    this->__index++;
                     this->syn = getSymCode(this->token);
                 }
                 break;

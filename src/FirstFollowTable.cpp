@@ -1,29 +1,29 @@
 #include "FirstFollowTable.h"
 #include "Logging.h"
 
-FirstFollowTable::FirstFollowTable(std::string filename)
+FirstFollowTable::FirstFollowTable(std::string __filename)
 {
-    this->_filename = filename;
-    std::fstream fin(this->_filename);
+    this->__filename = __filename;
+    std::fstream fin(this->__filename);
     std::string tmp;
-    this->_index = 0;
+    this->__index = 0;
     while (getline(fin, tmp))
     {
-        this->_index++;
+        this->__index++;
     }
-    this->Vns.insert("#");
-    this->formula = new std::pair<std::string, std::vector<std::string>>[this->_index];
-    this->_index = 0;
+    this->Vts.insert("#");
+    this->formula = new std::pair<std::string, std::vector<std::string>>[this->__index];
+    this->__index = 0;
 }
 
-bool FirstFollowTable::isTerminalChar(const std::string &s)
+bool FirstFollowTable::isTerminalChar(const std::string &__s)
 {
-    return (this->Vts.count(s) == 1);
+    return (this->Vts.count(__s) == 1);
 }
 
-void display(std::set<std::string> s)
+void display(std::set<std::string> &__s)
 {
-    for (auto it = s.begin(); it != s.end(); ++it)
+    for (auto it = __s.begin(); it != __s.end(); ++it)
     {
         std::cout << *it;
     }
@@ -33,19 +33,15 @@ void display(std::set<std::string> s)
 void FirstFollowTable::readExps()
 {
     std::string str;
-    std::ifstream fin(this->_filename);
+    std::ifstream fin(this->__filename);
     if (!fin.is_open())
     {
-        Log(ERR, "file \"%s\" not found.", _filename.data());
+        Log(ERR, "file \"%s\" not found.", __filename.data());
         return;
     }
     std::set<std::string> all_lit;
-    for (; getline(fin, str); this->_index++)
+    for (; getline(fin, str); this->__index++)
     {
-        if ((int)str.find("#") != -1)
-        {
-            break;
-        }
         int mid_pos = str.find("->");
         if (mid_pos == -1)
         {
@@ -65,9 +61,9 @@ void FirstFollowTable::readExps()
                 break;
             }
         }
-        this->formula[_index].first = str.substr(sta_pos, end_pos - sta_pos);
-        this->Vns.insert(formula[_index].first);
-        this->_left.push_back(formula[_index].first);
+        this->formula[__index].first = str.substr(sta_pos, end_pos - sta_pos);
+        this->Vns.insert(formula[__index].first);
+        this->__left.push_back(formula[__index].first);
 
         sta_pos = mid_pos + 2;
         str.append("\n");
@@ -84,24 +80,24 @@ void FirstFollowTable::readExps()
                     {
                         continue;
                     }
-                    this->formula[_index].second.push_back(ns);
+                    this->formula[__index].second.push_back(ns);
                     all_lit.insert(ns);
                 }
             }
         }
     }
-    _left.erase(std::unique(_left.begin(), _left.end()), _left.end());
+    __left.erase(std::unique(__left.begin(), __left.end()), __left.end());
     std::set_difference(all_lit.begin(), all_lit.end(), Vns.begin(), Vns.end(), std::inserter(Vts, Vts.begin()));
     fin.close();
 }
 
 void FirstFollowTable::calFirst()
 {
-    int pre = -1, now = 0;
-    while (pre != now)
+    int __pre = -1, __now = 0;
+    while (__pre != __now)
     {
-        pre = now;
-        for (int i = 0; i < _index; i++)
+        __pre = __now;
+        for (int i = 0; i < __index; i++)
         {
             std::string str = formula[i].first;
             std::vector<std::string> element = formula[i].second;
@@ -134,10 +130,10 @@ void FirstFollowTable::calFirst()
                     }
                 }
             }
-            now = 0;
+            __now = 0;
             for (auto t : Vns)
             {
-                now += (int)first[t].size();
+                __now += (int)first[t].size();
             }
         }
     }
@@ -145,12 +141,12 @@ void FirstFollowTable::calFirst()
 
 void FirstFollowTable::calFollow()
 {
-    follow[*_left.begin()].insert("#");
-    int pre = -1, now = 0;
-    while (pre != now)
+    follow[*__left.begin()].insert("#");
+    int __pre = -1, __now = 0;
+    while (__pre != __now)
     {
-        pre = now;
-        for (int i = 0; i < _index; i++)
+        __pre = __now;
+        for (int i = 0; i < __index; i++)
         {
             std::string str = formula[i].first;
             std::vector<std::string> element = formula[i].second;
@@ -185,83 +181,126 @@ void FirstFollowTable::calFollow()
                 }
             }
         }
-        now = 0;
+        __now = 0;
         for (auto n : Vns)
         {
-            now += (int)follow[n].size();
+            __now += (int)follow[n].size();
         }
     }
+}
+
+void FirstFollowTable::calStrFirst()
+{
+    std::string form;
+    for (int i = 0; i < __index; i++)
+    {
+        form.clear();
+        for (auto s : formula[i].second)
+        {
+            form += s + " ";
+        }
+        if (!form.empty())
+        {
+            form.pop_back();
+        }
+
+        __left.push_back(form);
+        Log(DEBUG, "form: %s", form.data());
+        for (auto s : formula[i].second)
+        {
+            if (first.count(s))
+            {
+                first[form].insert(first[s].begin(), first[s].end());
+            }
+            else
+            {
+                first[form].insert(s);
+            }
+            if (first[form].find("$") != first[form].end())
+            {
+                // 如果存在空字符
+                first[form].erase("$");
+            }
+            else
+                break;
+        }
+    }
+}
+
+void FirstFollowTable::calStrFollow()
+{
 }
 
 void FirstFollowTable::calAll()
 {
     calFirst();
     calFollow();
+    calStrFirst();
 }
 
 void FirstFollowTable::displayFirst()
 {
-    std::string _out;
+    std::string __out;
     Log(INFO, "FIRST集: ");
-    for (auto n : _left)
+    for (auto n : __left)
     {
-        _out.clear();
-        _out += "FIRST(" + n + "): { ";
+        __out.clear();
+        __out += "FIRST(" + n + "): { ";
         for (auto t : first[n])
         {
-            _out += t + ", ";
+            __out += t + ", ";
         }
-        _out += " }";
-        Log(INFO, "%s", _out.data());
+        __out += " }";
+        Log(INFO, "%s", __out.data());
     }
 }
 
 void FirstFollowTable::displayFollow()
 {
-    std::string _out;
+    std::string __out;
     Log(INFO, "FOLLOW集: ");
-    for (auto n : _left)
+    for (auto n : __left)
     {
-        _out.clear();
-        _out += "FOLLOW(" + n + "): { ";
+        __out.clear();
+        __out += "FOLLOW(" + n + "): { ";
         for (auto t : follow[n])
         {
-            _out += t + ", ";
+            __out += t + ", ";
         }
-        _out += " }";
-        Log(INFO, "%s", _out.data());
+        __out += " }";
+        Log(INFO, "%s", __out.data());
     }
 }
 
 void FirstFollowTable::showAll()
 {
-    std::string _out;
+    std::string __out;
 
     Log(INFO, "输入文法: ");
-    for (int i = 0; i < _index; i++)
+    for (int i = 0; i < __index; i++)
     {
-        _out.clear();
-        _out += formula[i].first + " -> ";
+        __out.clear();
+        __out += formula[i].first + " -> ";
         for (auto s : formula[i].second)
         {
-            _out += s;
+            __out += s;
         }
-        Log(INFO, "%s", _out.data());
+        Log(INFO, "%s", __out.data());
     }
 
     Log(INFO, "终结符集: ");
-    _out.clear();
+    __out.clear();
     for (auto t : Vts)
     {
-        _out += t + " ";
+        __out += t + " ";
     }
-    Log(INFO, "%s", _out.data());
+    Log(INFO, "%s", __out.data());
 
     Log(INFO, "非终结符集: ");
-    _out.clear();
+    __out.clear();
     for (auto n : Vns)
     {
-        _out += n + " ";
+        __out += n + " ";
     }
-    Log(INFO, "%s", _out.data());
+    Log(INFO, "%s", __out.data());
 }

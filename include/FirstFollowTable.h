@@ -11,16 +11,17 @@
 class FirstFollowTable
 {
 private:
-    int _index;
-    std::string _filename;
-    std::vector<std::string> _left;
+    std::string __filename;
+    std::vector<std::string> __left;
 
     bool isTerminalChar(const std::string &);
     void calFirst();
     void calFollow();
-
+    void calStrFirst();
+    void calStrFollow();
 
 public:
+    int __index;
     std::set<std::string> Vns, Vts;
     std::map<std::string, std::set<std::string>> first;
     std::map<std::string, std::set<std::string>> follow;

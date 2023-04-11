@@ -35,6 +35,7 @@ extern FILE *log_fp;
                     __FILE__, __LINE__, ##__VA_ARGS__);   \
             printf("[ERROR] " msg " \n", ##__VA_ARGS__);  \
         }                                                 \
+        fflush(log_fp);                                   \
     } while (0)
 #else
 #define Log(option, msg, ...)                          \

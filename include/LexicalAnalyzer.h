@@ -9,6 +9,7 @@ using T = std::pair<int, std::string>;
 
 // 符号表
 const static std::map<std::string, int> symbol_table{
+    {"NS", -5},
     {"UNKNOWN", -4},
     {"END", -3},
     {"ERR", -2},
@@ -45,13 +46,14 @@ const static std::map<std::string, int> symbol_table{
     {"IDN", 40},
     // INT
     {"INT", 50},
-    {"CR", 60},
-    {"LF", 61},
-    {"TAB", 62},
+    {"CR", 100},
+    {"LF", 101},
+    {"TAB", 102},
 };
 
 void showAll();
 int getSymCode(std::string);
+int getSymCode(std::string, std::string);
 
 // 全局参数
 class LexicalAnalyzer
@@ -71,25 +73,17 @@ private:
     // 单词字符串
     std::string token;
     // 当前扫描位置
-    int index = 0;
-    // 判断tag
-    int tag = 1;
-    // 存储处理结果
-    std::vector<T> result;
+    int __index = 0;
 
     bool isLetter(char);
     bool isDigit(char);
     int toDigit(char);
-    void scan(std::string);
-    std::string getKeyWord(int);
+    void scan(std::string&);
 
 public:
+    std::vector<T> result;
     std::string readfile(std::string);
     LexicalAnalyzer *process(std::string);
     void display();
-};
-
-enum errTable{
-    // 
-    UNKOWN, 
+    std::string getKeyWord(int);
 };

@@ -308,13 +308,13 @@ std::string FirstFollowTable::getFormulaStr(std::vector<std::string> &__v){
 }
 
 template<typename T>
-std::string FirstFollowTable::genFormatStr(std::string left, std::string right, std::string sep, T t){
-    std::string ret;
-    for(auto c: t){
-        ret += c + sep;
+std::string FirstFollowTable::genFormatStr(std::string __left, std::string __right, std::string __sep, T __t){
+    std::string __ret;
+    for(auto __c: __t){
+        __ret += __c + __sep;
     }
-    if(!ret.empty()){
-        ret.pop_back();
+    if(!__ret.empty()){
+        __ret.pop_back();
     }
-    return left + ret + right;
+    return __left + __ret + __right;
 }

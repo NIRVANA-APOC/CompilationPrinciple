@@ -15,10 +15,12 @@ int main(int argc, char **argv)
 
     std::string __input("../test/00/00.txt"), __grammar("../grammar.txt");
 
-    if(argc == 2){
+    if (argc == 2)
+    {
         __input = argv[1];
     }
-    else if(argc == 3){
+    else if (argc == 3)
+    {
         __input = argv[1];
         __grammar = argv[2];
     }

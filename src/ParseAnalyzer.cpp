@@ -4,23 +4,23 @@ ParseAnalyzer::ParseAnalyzer(FILE *__output, std::string __input, std::string __
 {
     this->__output = __output;
     this->__fft = new FirstFollowTable(__grammar);
-    __fft->readExps();
+    __fft->initFormula();
     __fft->calAll();
 
     this->__lex = new LexicalAnalyzer;
     __lex->process(__lex->readfile(__input));
 }
-
+// 打印__fft的所有内容
 void ParseAnalyzer::showAll()
 {
     __fft->showAll();
     __fft->displayFirst();
     __fft->displayFollow();
 }
-
+// 初始化并计算预测分析表
 void ParseAnalyzer::initAnalyzerTable()
 {
-    for (int i = 0; i < __fft->__index; i++)
+    for (int i = 0; i < __fft->__lines; i++)
     {
         std::string &__lf = __fft->formula[i].first;
         std::vector<std::string> &__rg = __fft->formula[i].second;
@@ -50,7 +50,7 @@ void ParseAnalyzer::initAnalyzerTable()
     }
     initLiteralTable();
 }
-
+// 将预测分析表的结果转换成人更易读懂的形式
 void ParseAnalyzer::initLiteralTable()
 {
     std::string __out;
@@ -76,7 +76,7 @@ void ParseAnalyzer::initLiteralTable()
         }
     }
 }
-
+// 将语法分析结果输出到指定文件中
 void ParseAnalyzer::output(std::string filename)
 {
     FILE *fout = fopen(filename.data(), "w");
@@ -95,7 +95,7 @@ void ParseAnalyzer::output(std::string filename)
     }
     fflush(fout);
 }
-
+// 开始语法分析
 void ParseAnalyzer::parse()
 {
     std::stack<std::string> symbol;
@@ -122,9 +122,9 @@ void ParseAnalyzer::parse()
     {
         auto &sym = symbol.top();
         auto &str = input.top();
-        if (checkIDN(symbol.top()) == checkIDN(input.top()))
+        if (checkStr(symbol.top()) == checkStr(input.top()))
         {
-            if (checkIDN(symbol.top()) == "EOF")
+            if (checkStr(symbol.top()) == "EOF")
             {
                 formatDisplay(cnt, symbol, input, "accept");
                 __flag = true;
@@ -160,7 +160,7 @@ void ParseAnalyzer::parse()
                 {
                     continue;
                 }
-                symbol.push(checkIDN(n));
+                symbol.push(checkStr(n));
             }
         }
     }
@@ -171,8 +171,12 @@ void ParseAnalyzer::parse()
 
     return;
 }
-
-std::string ParseAnalyzer::checkIDN(const std::string &__in)
+/*
+ *   检查字符串中是否含有特殊词语
+ *   主要是由于有些字符串例如"Ident",在输出时要输出成"IDN",而在内部语法分析时要以非终结符"Ident"存在,因此要做特别处理
+ *   @return 经过处理后的字符串
+ */
+std::string ParseAnalyzer::checkStr(const std::string &__in)
 {
     if (__in == "Ident")
     {
@@ -186,6 +190,12 @@ std::string ParseAnalyzer::checkIDN(const std::string &__in)
         return __in;
 }
 
+/*
+ *   检查词是否为特殊终结符
+ *   由于原始设计时对词法分析的结果采用了<种别码, 词>的形式,因此在进行语法分析的时候,对于特殊的种别码,例如INT, IDN要单独进行转换后再插入
+ *   也算是设计上的小问题
+ *   @return 经过处理后的字符串
+ */
 std::string ParseAnalyzer::inputHandle(const T &__t)
 {
     if (__t.first == getSymCode("IDN"))
@@ -202,16 +212,18 @@ std::string ParseAnalyzer::inputHandle(const T &__t)
     }
 }
 
+// 格式化输出
 void ParseAnalyzer::formatDisplay(int &cnt, const std::stack<std::string> &symbol, const std::stack<std::string> &input, std::string msg)
 {
     ++cnt;
-    Log(INFO, "%d\t%s#%s\t%s", cnt, checkIDN(symbol.top()).data(), checkIDN(input.top()).data(), msg.data());
+    Log(INFO, "%d\t%s#%s\t%s", cnt, checkStr(symbol.top()).data(), checkStr(input.top()).data(), msg.data());
     if (__output)
     {
-        fprintf(__output, "%d\t%s#%s\t%s\n", cnt, checkIDN(symbol.top()).data(), checkIDN(input.top()).data(), msg.data());
+        fprintf(__output, "%d\t%s#%s\t%s\n", cnt, checkStr(symbol.top()).data(), checkStr(input.top()).data(), msg.data());
     }
 }
 
+// 初始化预测分析表并开始语法分析
 void ParseAnalyzer::start()
 {
     this->initAnalyzerTable();

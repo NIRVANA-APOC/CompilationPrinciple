@@ -78,7 +78,7 @@ private:
     bool isLetter(char);
     bool isDigit(char);
     int toDigit(char);
-    void scan(std::string&);
+    void scan(std::string &);
 
 public:
     std::vector<T> result;

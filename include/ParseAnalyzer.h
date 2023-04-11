@@ -29,7 +29,7 @@ public:
     ParseAnalyzer(FILE *, std::string, std::string);
     void showAll();
     void initAnalyzerTable();
-    void literalTable();
+    void initLiteralTable();
     void output(std::string);
     void parse();
     void start();

@@ -31,6 +31,9 @@ public:
     void readExps();
     void calAll();
     void showAll();
+    static std::string getFormulaStr(std::vector<std::string>&);
+    template<typename T>
+    static std::string genFormatStr(std::string, std::string, std::string, T);
     void displayFirst();
     void displayFollow();
 };

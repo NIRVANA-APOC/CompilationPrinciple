@@ -20,25 +20,15 @@ void ParseAnalyzer::showAll()
 
 void ParseAnalyzer::initAnalyzerTable()
 {
-    // std::string form;
     for (int i = 0; i < __fft->__index; i++)
     {
-        // form.clear();
         std::string &__lf = __fft->formula[i].first;
         std::vector<std::string> &__rg = __fft->formula[i].second;
         if (__lf == "#")
         {
             continue;
         }
-        std::string form;
-        for (auto f : __rg)
-        {
-            form += f + " ";
-        }
-        if (!form.empty())
-        {
-            form.pop_back();
-        }
+        std::string form = FirstFollowTable::getFormulaStr(__rg);
 
         if (form != "$")
         {
@@ -50,22 +40,6 @@ void ParseAnalyzer::initAnalyzerTable()
                 }
             }
         }
-        // if (form == "$")
-        // {
-        //     for (auto ts : fft->follow[lf])
-        //     {
-        //         if(lf == "program"){
-        //             Log(DEBUG, "ATTENTION: %s\n", ts.data());
-        //         }
-        //         if (ts != "$")
-        //         {
-        //             analyzer_table[lf][ts].assign(rg.rbegin(), rg.rend());
-        //         }
-        //     }
-        // }
-        // for(auto f: rg){
-
-        // }
     }
     for (auto ns : __fft->Vns)
     {
@@ -74,11 +48,10 @@ void ParseAnalyzer::initAnalyzerTable()
             analyzer_table[ns][ts].push_back("$");
         }
     }
-    // reverse();
-    literalTable();
+    initLiteralTable();
 }
 
-void ParseAnalyzer::literalTable()
+void ParseAnalyzer::initLiteralTable()
 {
     std::string __out;
     for (auto ns : __fft->Vns)
@@ -89,10 +62,10 @@ void ParseAnalyzer::literalTable()
             __out += ns + " -> ";
             for (auto f : analyzer_table[ns][ts])
             {
-                // if (ns == "#" || ts == "$" || f == "")
-                // {
-                //     continue;
-                // }
+                if (ns == "#" || ts == "$" || f == "")
+                {
+                    continue;
+                }
                 __out += f + ", ";
             }
             if (__out == ns + " -> ")

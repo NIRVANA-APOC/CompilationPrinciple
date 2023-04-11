@@ -191,19 +191,10 @@ void FirstFollowTable::calFollow()
 
 void FirstFollowTable::calStrFirst()
 {
-    std::string form;
+    
     for (int i = 0; i < __index; i++)
     {
-        form.clear();
-        for (auto s : formula[i].second)
-        {
-            form += s + " ";
-        }
-        if (!form.empty())
-        {
-            form.pop_back();
-        }
-
+        std::string form = getFormulaStr(formula[i].second);
         __left.push_back(form);
         Log(DEBUG, "form: %s", form.data());
         for (auto s : formula[i].second)
@@ -303,4 +294,27 @@ void FirstFollowTable::showAll()
         __out += n + " ";
     }
     Log(INFO, "%s", __out.data());
+}
+
+std::string FirstFollowTable::getFormulaStr(std::vector<std::string> &__v){
+    std::string __ret;
+    for(auto f: __v){
+        __ret += f + " ";
+    }
+    if(!__ret.empty()){
+        __ret.pop_back();
+    }
+    return __ret;
+}
+
+template<typename T>
+std::string FirstFollowTable::genFormatStr(std::string left, std::string right, std::string sep, T t){
+    std::string ret;
+    for(auto c: t){
+        ret += c + sep;
+    }
+    if(!ret.empty()){
+        ret.pop_back();
+    }
+    return left + ret + right;
 }

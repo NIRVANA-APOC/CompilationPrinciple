@@ -40,4 +40,5 @@ public:
     std::string checkStr(const std::string &);
     std::string inputHandle(const T &);
     void formatDisplay(int &, const std::stack<std::string> &, const std::stack<std::string> &, std::string);
+    void visitor(std::string);
 };

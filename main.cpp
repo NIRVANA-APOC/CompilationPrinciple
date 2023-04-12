@@ -13,7 +13,7 @@ int main(int argc, char **argv)
 {
     LOG_ON("../run.log")
 
-    std::string __input("../test/00/00.txt"), __grammar("../grammar.txt");
+    std::string __input("../test.txt"), __grammar("../grammar.txt");
 
     if (argc == 2)
     {
@@ -26,8 +26,10 @@ int main(int argc, char **argv)
     }
 
     // ParseAnalyzer __parse(nullptr, __input, __grammar);
+    // __parse.start();
+    Test t(0, "../test.txt");
 
-    Test t0(0, "../test/00/00.txt");
+    // Test t0(0, "../test/00/00.txt");
     // Test t1(1, "../test/01/01.txt");
     // Test t2(2, "../test/02/02.txt");
     // Test t7(7, "../test/07/07.txt");

@@ -1,89 +1,140 @@
 #pragma once
-#include <map>
+
 #include <string>
-#include <vector>
-#include <fstream>
-#include <exception>
+#include <map>
+#include <array>
+#include <list>
+#include "Logging.h"
 
-using T = std::pair<int, std::string>;
+namespace lex
+{
+    /*!
+     *@brief 词法解析器pair对，<token种别码，token字符串>
+     */
+    using T = std::pair<int, std::string>;
 
-// 符号表
-const static std::map<std::string, int> symbol_table{
-    {"NS", -5},
-    {"UNKNOWN", -4},
-    {"END", -3},
-    {"ERR", -2},
-    // SPACE
-    {"SP", -1},
-    // KW
-    {"int", 0},
-    {"void", 1},
-    {"return", 2},
-    {"const", 3},
-    // OP
-    {"+", 10},
-    {"-", 11},
-    {"*", 12},
-    {"/", 13},
-    {"%", 14},
-    {"=", 15},
-    {">", 16},
-    {"<", 17},
-    {"==", 18},
-    {"<=", 19},
-    {">=", 20},
-    {"!=", 21},
-    {"&&", 22},
-    {"||", 23},
-    // SE
-    {"(", 30},
-    {")", 31},
-    {"{", 32},
-    {"}", 33},
-    {";", 34},
-    {",", 35},
-    // IDN
-    {"IDN", 40},
-    // INT
-    {"INT", 50},
-    {"CR", 100},
-    {"LF", 101},
-    {"TAB", 102},
-};
+    /*!
+     * @brief 符号表
+     */
+    const static std::map<std::string, int> symbol_table{
+        {"UNKNOWN", -4},
+        {"END", -3},
+        {"ERR", -2},
+        // KW
+        {"int", 0},
+        {"void", 1},
+        {"return", 2},
+        {"const", 3},
+        // OP
+        {"+", 10},
+        {"-", 11},
+        {"*", 12},
+        {"/", 13},
+        {"%", 14},
+        {"=", 15},
+        {">", 16},
+        {"<", 17},
+        {"==", 18},
+        {"<=", 19},
+        {">=", 20},
+        {"!=", 21},
+        {"&&", 22},
+        {"||", 23},
+        // SE
+        {"(", 30},
+        {")", 31},
+        {"{", 32},
+        {"}", 33},
+        {";", 34},
+        {",", 35},
+        // IDN
+        {"IDN", 40},
+        // INT
+        {"INT", 50},
+        {"CR", 100},
+        {"LF", 101},
+        {"TAB", 102},
+        {"SPACE", 103},
+    };
 
-void showAll();
-int getSymCode(std::string);
-int getSymCode(std::string, std::string);
+    /*!
+     *@brief 符号转种别码函数
+     *@param sym 待转换的符号
+     *@param _default 未找到对应种别码时默认返回的符号种别码，default="UNKNOWN"
+     *@return 转换后的符号种别码
+     */
+    const int sym2syn(std::string sym, std::string _default);
 
-// 全局参数
+    const static std::array<T, 7> keyword_table{
+        T(0, "UKN"),
+        T(10, "KW"),
+        T(30, "OP"),
+        T(40, "SE"),
+        T(50, "IDN"),
+        T(60, "INT"),
+        T(100, "UKN"),
+    };
+
+    /*!
+     *@brief 种别码转关键字函数
+     *@param syn 待转换的种别码
+     *@return 转换后的关键字字符串
+     */
+    const std::string &syn2key(int syn);
+
+    bool isLetter(char ch);
+    bool isDigit(char ch);
+}
+
+/*!
+ *@brief 词法分析器
+ *@param output_filepath 输出文件的路径
+ *@param result 词法分析结果
+ */
 class LexicalAnalyzer
 {
 private:
-    // 符号种别
-    const std::string keyWord[6]{
-        "KW",
-        "OP",
-        "SE",
-        "IDN",
-        "INT",
-        "UKN",
-    };
-    // 单词种别码
-    int syn;
-    // 单词字符串
-    std::string token;
-    // 当前扫描位置
-    int __index = 0;
+    std::string input_filepath;
+    std::string output_filepath;
+    std::string file_content;
+    bool _runover = false;
 
-    bool isLetter(char);
-    bool isDigit(char);
-    int toDigit(char);
-    void scan(std::string &);
+    /*!
+     *@brief 读取文件内容，并存储在file_content私有成员内
+     */
+    void read();
+
+    /*!
+     *@brief 扫描器函数
+     *@brief 逐字符扫描file_content内容
+     *@return 成功：以std::pair类型返回第一个成功处理的<种别码，字符串token> 失败：返回<-2, ERR>
+     */
+    lex::T scan();
 
 public:
-    std::vector<T> result;
-    std::string readfile(std::string);
-    LexicalAnalyzer *process(std::string);
-    void display();
-    std::string getKeyWord(int);
+    std::list<lex::T> result;
+
+    /*!
+     *@brief 词法解析器的构造函数
+     *@param input_filepath 输入文件的路径
+     *@param output_filepath 输出文件的路径
+     *@return 当前对象本身
+     */
+    explicit LexicalAnalyzer(const std::string input_filepath, const std::string output_filepath = std::string("lex.txt"))
+        : input_filepath(input_filepath), output_filepath(output_filepath){};
+    ~LexicalAnalyzer() = default;
+
+    /*!
+     *@brief 词法解析函数，通过循环调用scan函数对输入字符串进行词法解析
+     *@return 当前对象本身
+     */
+    LexicalAnalyzer *run();
+
+    /*!
+     *@brief 将词法分析结果输出到指定文件中
+     *@return 当前对象本身
+     */
+    LexicalAnalyzer *output();
+
+    bool has_run() { return this->_runover; }
 };

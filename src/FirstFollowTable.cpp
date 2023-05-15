@@ -1,111 +1,68 @@
 #include "FirstFollowTable.h"
-#include "Logging.h"
 
-FirstFollowTable::FirstFollowTable(std::string __filename)
+bool FirstFollowTable::isTerminalChar(const std::string &s)
 {
-    this->__filename = __filename;
-    std::fstream fin(this->__filename);
-    std::string tmp;
-    this->__lines = 0;
-    while (getline(fin, tmp))
+    return static_cast<bool>(this->Vts.count(s));
+}
+
+std::string FirstFollowTable::trim(std::string s)
+{
+    if (!s.empty())
     {
-        this->__lines++;
+        s.erase(0, s.find_first_not_of(" "));
+        s.erase(s.find_last_not_of(" ") + 1);
     }
-    this->Vts.insert("#");
-    this->formula = new std::pair<std::string, std::vector<std::string>>[this->__lines];
-    this->__lines = 0;
+    return s;
 }
 
-// 判断该符号是否为终结符
-bool FirstFollowTable::isTerminalChar(const std::string &__s)
+void FirstFollowTable::read()
 {
-    return (this->Vts.count(__s) == 1);
-}
-
-// 打印一个set的所有内容
-void display(std::set<std::string> &__s)
-{
-    for (auto it = __s.begin(); it != __s.end(); ++it)
-    {
-        std::cout << *it;
-    }
-    std::cout << std::endl;
-}
-
-// 处理文法文件
-void FirstFollowTable::initFormula()
-{
-    std::string str;
-    std::ifstream fin(this->__filename);
+    std::string buf;
+    std::ifstream fin(this->grammar_filepath);
+    int lines = 0;
     if (!fin.is_open())
     {
-        Log(ERR, "file \"%s\" not found.", __filename.data());
+        Log(ERR, "file \"%s\" not found.", grammar_filepath.data());
         return;
     }
-    // __all_symbol集合存放所有终结符和非终结符,便于后续计算终结符集
-    std::set<std::string> __all_symbol;
-    for (; getline(fin, str); this->__lines++)
+    std::set<std::string> all_syms;
+    for (; getline(fin, buf); lines++)
     {
-        int mid_pos = str.find("->");
+        int mid_pos = buf.find("->");
         if (mid_pos == -1)
         {
-            Log(ERR, "表达式格式有误, 以忽略");
+            Log(ERR, "表达式格式有误, 已忽略");
             continue;
         }
-        int sta_pos = 0, end_pos = mid_pos;
-        while (str.at(sta_pos) == ' ')
-        {
-            sta_pos++;
-        }
-        for (int i = sta_pos; i < mid_pos; i++)
-        {
-            if (str.at(i) == ' ')
-            {
-                end_pos = i;
-                break;
-            }
-        }
-        this->formula[__lines].first = str.substr(sta_pos, end_pos - sta_pos);
-        this->Vns.insert(formula[__lines].first);
-        this->__left.push_back(formula[__lines].first);
+        std::string tmp;
+        fft::T form;
 
-        sta_pos = mid_pos + 2;
-        // 由于文法文件没有最终的EOF符号,因此手动添加换行符以保证后续处理不会丢失文法最后一行
-        str.append("\n");
-        for (int i = sta_pos; i < (int)str.length(); i++)
+        tmp = trim(buf.substr(0, mid_pos));
+        form.first = tmp;
+        this->left_part.push_back(tmp);
+        this->Vns.insert(tmp);
+        all_syms.insert(tmp);
+        std::stringstream ss(trim(buf.substr(mid_pos + 2)));
+        while (ss >> tmp)
         {
-            if (str.at(i) == ' ' || str.at(i) == '\r' || str.at(i) == '\n')
-            {
-                end_pos = i;
-                if (end_pos != sta_pos)
-                {
-                    std::string ns = str.substr(sta_pos + 1, end_pos - sta_pos - 1);
-                    sta_pos = end_pos;
-                    if (ns == std::string(""))
-                    {
-                        // 由于sta_pos 和 end_pos的判断问题,有时可能会引入空字符串,此时要进行排除
-                        continue;
-                    }
-                    this->formula[__lines].second.push_back(ns);
-                    __all_symbol.insert(ns);
-                }
-            }
+            form.second.push_back(tmp);
+            all_syms.insert(tmp);
         }
+        this->formula.push_back(form);
     }
-    __left.erase(std::unique(__left.begin(), __left.end()), __left.end());
-    // 通过做差集的方式得到终结符集
-    std::set_difference(__all_symbol.begin(), __all_symbol.end(), Vns.begin(), Vns.end(), std::inserter(Vts, Vts.begin()));
+    this->left_part.erase(std::unique(left_part.begin(), left_part.end()), left_part.end());
+    std::set_difference(all_syms.begin(), all_syms.end(), Vns.begin(), Vns.end(), std::inserter(Vts, Vts.begin()));
     fin.close();
 }
 
-// 计算FIRST集
 void FirstFollowTable::calFirst()
 {
-    int __pre = -1, __now = 0;
-    while (__pre != __now)
+    int lines = this->formula.size();
+    int pre = -1, now = 0;
+    while (pre != now)
     {
-        __pre = __now;
-        for (int i = 0; i < __lines; i++)
+        pre = now;
+        for (int i = 0; i < lines; i++)
         {
             std::string str = formula[i].first;
             std::vector<std::string> element = formula[i].second;
@@ -138,24 +95,24 @@ void FirstFollowTable::calFirst()
                     }
                 }
             }
-            __now = 0;
+            now = 0;
             for (auto t : Vns)
             {
-                __now += (int)first[t].size();
+                now += (int)first[t].size();
             }
         }
     }
 }
 
-// 计算FOLLOW集
 void FirstFollowTable::calFollow()
 {
-    follow[*__left.begin()].insert("#");
-    int __pre = -1, __now = 0;
-    while (__pre != __now)
+    int lines = this->formula.size();
+    follow[*left_part.begin()].insert("#");
+    int pre = -1, now = 0;
+    while (pre != now)
     {
-        __pre = __now;
-        for (int i = 0; i < __lines; i++)
+        pre = now;
+        for (int i = 0; i < lines; i++)
         {
             std::string str = formula[i].first;
             std::vector<std::string> element = formula[i].second;
@@ -190,22 +147,21 @@ void FirstFollowTable::calFollow()
                 }
             }
         }
-        __now = 0;
+        now = 0;
         for (auto n : Vns)
         {
-            __now += (int)follow[n].size();
+            now += (int)follow[n].size();
         }
     }
 }
 
-// 计算串的FIRST集
 void FirstFollowTable::calStrFirst()
 {
-
-    for (int i = 0; i < __lines; i++)
+    int lines = this->formula.size();
+    for (int i = 0; i < lines; i++)
     {
         std::string form = getFormulaStr(formula[i].second);
-        __left.push_back(form);
+        left_part.push_back(form);
         Log(DEBUG, "form: %s", form.data());
         for (auto s : formula[i].second)
         {
@@ -228,113 +184,108 @@ void FirstFollowTable::calStrFirst()
     }
 }
 
-//
-void FirstFollowTable::calStrFollow()
+FirstFollowTable *FirstFollowTable::run()
 {
+    this->read();
+
+    this->calFirst();
+    this->calFollow();
+    this->calStrFirst();
+
+    _runover = true;
+    return this;
 }
 
-// 计算所有first和follow集
-void FirstFollowTable::calAll()
+FirstFollowTable *FirstFollowTable::output()
 {
-    calFirst();
-    calFollow();
-    calStrFirst();
-}
-// 打印first集
-void FirstFollowTable::displayFirst()
-{
-    std::string __out;
-    Log(INFO, "FIRST集: ");
-    for (auto n : __left)
+    if (this->output_filepath.empty())
     {
-        __out.clear();
-        __out += "FIRST(" + n + "): { ";
-        for (auto t : first[n])
+        Log(INFO, "未指定输出文件路径");
+        return this;
+    }
+    FILE *fout = fopen(this->output_filepath.data(), "w");
+    if (!fout)
+    {
+        Log(INFO, "输出文件打开失败");
+        return this;
+    }
+    std::string buf;
+
+    fprintf(fout, "FIRST集: \n");
+    for (const auto &l : left_part)
+    {
+        buf.clear();
+        buf += "FIRST(" + l + "): { ";
+        for (const auto &r : this->first[l])
         {
-            __out += t + ", ";
+            buf += r + ", ";
         }
-        __out += " }";
-        Log(INFO, "%s", __out.data());
+        buf += " }";
+        fprintf(fout, "%s\n", buf.data());
     }
-}
-// 打印follow集
-void FirstFollowTable::displayFollow()
-{
-    std::string __out;
-    Log(INFO, "FOLLOW集: ");
-    for (auto n : __left)
+
+    fprintf(fout, "FOLLOW集: \n");
+    for (const auto &l : left_part)
     {
-        __out.clear();
-        __out += "FOLLOW(" + n + "): { ";
-        for (auto t : follow[n])
+        buf.clear();
+        buf += "FOLLOW(" + l + "): { ";
+        for (const auto &r : this->follow[l])
         {
-            __out += t + ", ";
+            buf += r + ", ";
         }
-        __out += " }";
-        Log(INFO, "%s", __out.data());
+        buf += " }";
+        fprintf(fout, "%s\n", buf.data());
     }
-}
-// 打印文法,终结符集和非终结符集
-void FirstFollowTable::showAll()
-{
-    std::string __out;
 
-    Log(INFO, "输入文法: ");
-    for (int i = 0; i < __lines; i++)
+    fclose(fout);
+    return this;
+}
+
+void FirstFollowTable::formulaDisplay()
+{
+    std::string buf;
+    for (const auto &f : this->formula)
     {
-        __out.clear();
-        __out += formula[i].first + " -> ";
-        for (auto s : formula[i].second)
+        buf.clear();
+        buf += f.first + " -> ";
+        for (const auto &r : f.second)
         {
-            __out += s;
+            buf += r + ", ";
         }
-        Log(INFO, "%s", __out.data());
+        Log(INFO, "%s", buf.data());
     }
-
-    Log(INFO, "终结符集: ");
-    __out.clear();
-    for (auto t : Vts)
-    {
-        __out += t + " ";
-    }
-    Log(INFO, "%s", __out.data());
-
-    Log(INFO, "非终结符集: ");
-    __out.clear();
-    for (auto n : Vns)
-    {
-        __out += n + " ";
-    }
-    Log(INFO, "%s", __out.data());
-}
-// 通过拼接字符串向量,得到文法右侧
-// @return 对应文法右侧结果,也可以用作字符串拼接函数,每两个元素中间以空格隔开
-std::string FirstFollowTable::getFormulaStr(std::vector<std::string> &__v)
-{
-    std::string __ret;
-    for (auto f : __v)
-    {
-        __ret += f + " ";
-    }
-    if (!__ret.empty())
-    {
-        __ret.pop_back();
-    }
-    return __ret;
 }
 
-// 本来是想用作格式化输出两边有包围符号的字符串使用的,不过对整体工作用处不大,因此未投入使用
-template <typename T>
-std::string FirstFollowTable::genFormatStr(std::string __left, std::string __right, std::string __sep, T __t)
+void FirstFollowTable::vnsDisplay()
 {
-    std::string __ret;
-    for (auto __c : __t)
+    std::string buf;
+    buf += "Vns = { ";
+    for (const auto &n : this->Vns)
     {
-        __ret += __c + __sep;
+        buf += n + ", ";
     }
-    if (!__ret.empty())
+    buf += " }";
+    Log(INFO, "%s", buf.data());
+}
+
+void FirstFollowTable::vtsDisplay()
+{
+    std::string buf;
+    buf += "Vts = { ";
+    for (const auto &t : this->Vts)
     {
-        __ret.pop_back();
+        buf += t + ", ";
     }
-    return __left + __ret + __right;
+    buf += " }";
+    Log(INFO, "%s", buf.data());
+}
+
+std::string FirstFollowTable::getFormulaStr(const std::vector<std::string> &v)
+{
+    std::string res;
+    for (const auto &f : v)
+    {
+        res += f + " ";
+    }
+    return res;
 }

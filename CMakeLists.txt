@@ -21,11 +21,11 @@ set(CMAKE_CXX_FLAGS "-g -Wall -Wno-attributes -Wno-unused-variable")
 ################################
 file(GLOB_RECURSE DIR_SRC "src/*.cpp")
 include_directories("include")
-add_library(project1_lib ${DIR_SRC})
-add_executable(project1 main.cpp)
+add_library(project_lib ${DIR_SRC})
+add_executable(main main.cpp)
 # Key idea: SEPARATE OUT your main() function into its own file so it can be its
 # own executable. Separating out main() means you can add this library to be
 # used elsewhere.
 
-target_link_libraries(project1 project1_lib)
+target_link_libraries(main project_lib)
 

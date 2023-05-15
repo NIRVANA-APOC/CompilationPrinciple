@@ -29,33 +29,6 @@ void ParseAnalyzer::initAnalyzerTable()
             analyzer_table[ns][ts].push_back("$");
         }
     }
-    initLiteralTable();
-}
-
-void ParseAnalyzer::initLiteralTable()
-{
-    std::string buf;
-    for (const auto &ns : this->fft->Vns)
-    {
-        for (const auto &ts : this->fft->Vts)
-        {
-            buf.clear();
-            buf += ns + " -> ";
-            for (const auto &f : analyzer_table[ns][ts])
-            {
-                if (ns == "#" || ts == "$" || f == "")
-                {
-                    continue;
-                }
-                buf += f + ", ";
-            }
-            if (buf == ns + " -> ")
-            {
-                continue;
-            }
-            literal_table[ns][ts] = "(" + ns + ", " + ts + ") => [ " + buf + " ]";
-        }
-    }
 }
 
 ParseAnalyzer *ParseAnalyzer::run()

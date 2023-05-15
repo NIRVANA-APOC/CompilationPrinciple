@@ -136,5 +136,8 @@ public:
      */
     LexicalAnalyzer *output();
 
+    /*!
+     *@brief 判断该词法分析器是否调用过run函数
+     */
     bool has_run() { return this->_runover; }
 };

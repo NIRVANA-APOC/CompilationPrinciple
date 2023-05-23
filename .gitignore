@@ -5,3 +5,8 @@ output/*
 # grammar.txt
 *.exe
 *.log
+log.*
+nfa.*
+test.*
+lex.*
+par.*

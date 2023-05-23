@@ -25,21 +25,25 @@ using closure_type = std::set<std::string>;
 class NFA{
 private:
     std::string input_filepath;
-    closure_type states;
+    
     closure_type syms;
     std::map<std::string, std::map<std::string, closure_type>> nfa;
-    std::map<int, std::map<std::string, int>> matrix;
+    std::map<std::string, std::map<std::string, std::string>> dfa;
 
     void read();
+    void determinNFA();
     
 
-
 public:
+    // <a, b, c> -> from a via b to c
+    std::map<std::string, std::map<std::string, std::string>> matrix;
+    closure_type states;
     explicit NFA(std::string input_filepath): input_filepath(input_filepath) {}
-    NFA* run();
-    NFA* output();
     const closure_type getSingleClosure(const closure_type& S, const std::string& sym);
     const closure_type getEpsilonClosure(const closure_type& S);
     const closure_type Ix(const closure_type& I, std::string x);
-    void genMatrix(const closure_type& S);
+    const std::pair<closure_type, closure_type> move(const closure_type& S, const std::string& sym);
+    void minimizeDFA(const closure_type& start, const closure_type& end);
+    NFA* run();
+    NFA* output();
 };

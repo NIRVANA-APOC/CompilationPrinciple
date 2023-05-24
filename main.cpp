@@ -2,49 +2,30 @@
 #include "LexicalAnalyzer.h"
 #include "FirstFollowTable.h"
 #include "ParseAnalyzer.h"
-#include "NFA.h"
-#include "DFA.h"
+#include "FA.h"
 #include "Logging.h"
 
-FILE* log_fp;
+FILE *log_fp;
 
-int main(){
+int main()
+{
     LOG_ON("../log.txt")
 
-    // LexicalAnalyzer* lex = new LexicalAnalyzer("../test.txt");
-    // // lex->run()->output();
-
-    // FirstFollowTable* fft = new FirstFollowTable("../grammar.txt");
-    // // fft->run()->output();
-
-    // ParseAnalyzer* par = new ParseAnalyzer(lex, fft);
-    // par->run()->output();
-    NFA* nfa = new NFA("../nfa.txt");
+    // 输入NFA图并进行NFA确定化
+    FA *nfa = new FA("../nfa.txt");
     nfa->run();
     nfa->output();
-    // auto &a = nfa->getNewPartition(nfa->states);
-    // for(auto i: a){
-    //     std::cout << convert(i) << std::endl;
-    // }
+    // DFA最小化
+    nfa->minimizeDFA(closure{"0", "1", "2"}, closure{"3", "4", "5", "6"});
 
-    // std::cout << convert(nfa->move(nfa->states, "a").first) << std::endl;
-    // std::cout << convert(nfa->move(nfa->states, "a").second) << std::endl;
-    // std::cout << convert(nfa->move(nfa->states, "b").first) << std::endl;
-    // std::cout << convert(nfa->move(nfa->states, "b").second) << std::endl;
-    // std::cout << convert(nfa->move(closure_type{"0", "1", "2"}, "a").first) << std::endl;
-    // std::cout << convert(nfa->move(closure_type{"0", "1", "2"}, "a").second) << std::endl;
-    // std::cout << convert(nfa->move(closure_type{"0", "1", "2"}, "a").first) << std::endl;
-    // std::cout << convert(nfa->move(closure_type{"0", "1", "2"}, "a").second) << std::endl;
-    // std::cout << convert(nfa->move(closure_type{"3", "4", "5", "6"}, "a").first) << std::endl;
-    // std::cout << convert(nfa->move(closure_type{"3", "4", "5", "6"}, "a").second) << std::endl;
-    // std::cout << convert(nfa->move(closure_type{"3", "4", "5", "6"}, "b").first) << std::endl;
-    // std::cout << convert(nfa->move(closure_type{"3", "4", "5", "6"}, "b").second) << std::endl;
-
-    nfa->minimizeDFA(closure_type{"0", "1", "2"}, closure_type{"3", "4", "5", "6"});
-
-    // DFA* dfa = new DFA(nfa);
-    // closure_type a{"0", "1", "2"};
-    // dfa->move(a, "a");
-    
+    // 定义词法分析器并输入文件
+    LexicalAnalyzer *lex = new LexicalAnalyzer("../test.txt");
+    lex->run()->output();
+    // 定义FirstFollow集并输入语法文件
+    FirstFollowTable *fft = new FirstFollowTable("../grammar.txt");
+    fft->run()->output();
+    // 定义语法分析器
+    ParseAnalyzer *par = new ParseAnalyzer(lex, fft);
+    par->run()->output();
     LOG_OFF
 }

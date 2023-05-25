@@ -44,10 +44,6 @@ private:
      */
     static std::string trim(std::string s);
 
-    void formulaDisplay();
-    void vnsDisplay();
-    void vtsDisplay();
-
     bool isTerminalChar(const std::string &s);
     void calFirst();
     void calFollow();
@@ -60,6 +56,10 @@ public:
     std::map<std::string, std::set<std::string>> follow;
     std::vector<fft::T> formula;
     std::vector<std::string> left_part;
+
+    void formulaDisplay();
+    void vnsDisplay();
+    void vtsDisplay();
 
     /*!
      *@brief 构造函数

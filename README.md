@@ -1,3 +1,10 @@
+2023.5.25
+
+- 调整了grammar.txt文件
+- 修改了checkStr函数
+
+
+
 2023.04.10
 
 - 完成了FIRST集和FOLLOW集求解功能

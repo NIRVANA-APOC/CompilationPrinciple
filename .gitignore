@@ -6,7 +6,7 @@ output/*
 *.exe
 *.log
 log.txt
-nfa.*
-test.*
-lex.*
-par.*
+nfa.txt
+test.txt
+lex.txt
+par.txt

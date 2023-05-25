@@ -8,8 +8,6 @@
 [INFO] UNKONWN < LF > 
 [INFO] UNKONWN < CR > 
 [INFO] UNKONWN < LF > 
-[INFO] UNKONWN < CR > 
-[INFO] UNKONWN < LF > 
 [INFO] END 
 [DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: compUnit  
 [DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: decl compUnit  
@@ -20,23 +18,24 @@
 [DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: const bType constDef argConst ;  
 [DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: , constDef argConst  
 [DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: $  
-[DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: Ident = constInitVal  
+[DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: IDN = constInitVal  
 [DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: constExp  
+[DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: assignExp  
 [DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: bType varDef argVarDecl ;  
 [DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: , varDef argVarDecl  
 [DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: $  
-[DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: Ident argVarDef  
+[DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: IDN argVarDef  
 [DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: = initVal  
 [DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: $  
 [DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: exp  
 [DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: int  
-[DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: funcType Ident ( funcFParams ) block  
+[DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: funcType IDN ( funcFParams ) block  
 [DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: void  
 [DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: funcFParam argFunctionF  
 [DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: $  
 [DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: , funcFParam argFunctionF  
 [DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: $  
-[DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: bType Ident  
+[DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: bType IDN  
 [DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: { blockItem }  
 [DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: decl blockItem  
 [DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: stmt blockItem  
@@ -45,34 +44,22 @@
 [DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: ;  
 [DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: block  
 [DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: return argExp ;  
-[DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: $  
-[DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: exp  
-[DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: assignExp  
-[DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: Ident  
-[DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: ( exp )  
-[DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: number  
-[DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: INT  
-[DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: +  
-[DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: -  
-[DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: !  
-[DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: unaryOp unaryExp  
-[DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: Ident callFunc  
 [DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: ( funcRParams )  
 [DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: $  
-[DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: primaryExp  
+[DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: exp  
 [DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: funcRParam argFunctionR  
 [DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: $  
 [DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: , funcRParam argFunctionR  
 [DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: $  
 [DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: exp  
-[DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: unaryExp mulExpAtom  
-[DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: * unaryExp mulExpAtom  
-[DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: / unaryExp mulExpAtom  
-[DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: % unaryExp mulExpAtom  
 [DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: $  
-[DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: mulExp addExpAtom  
-[DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: + mulExp addExpAtom  
-[DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: - mulExp addExpAtom  
+[DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: assignExp  
+[DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: eqExp assignExpAtom  
+[DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: = eqExp assignExpAtom  
+[DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: $  
+[DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: relExp eqExpAtom  
+[DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: == relExp eqExpAtom  
+[DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: != relExp eqExpAtom  
 [DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: $  
 [DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: addExp relExpAtom  
 [DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: < addExp relExpAtom  
@@ -80,165 +67,44 @@
 [DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: <= addExp relExpAtom  
 [DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: >= addExp relExpAtom  
 [DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: $  
-[DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: relExp eqExpAtom  
-[DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: == relExp eqExpAtom  
-[DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: != relExp eqExpAtom  
+[DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: mulExp addExpAtom  
+[DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: + mulExp addExpAtom  
+[DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: - mulExp addExpAtom  
 [DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: $  
-[DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: eqExp assignExpAtom  
-[DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: = eqExp assignExpAtom  
+[DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: unaryExp mulExpAtom  
+[DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: * unaryExp mulExpAtom  
+[DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: / unaryExp mulExpAtom  
+[DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: % unaryExp mulExpAtom  
 [DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: $  
-[DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: assignExp  
-[INFO] 1	program#void	reduction 
-[INFO] 2	compUnit#void	reduction 
-[INFO] 3	funcDef#void	reduction 
-[INFO] 4	funcType#void	reduction 
-[INFO] 5	void#void	move 
-[INFO] 6	IDN#IDN	move 
-[INFO] 7	(#(	move 
-[INFO] 8	funcFParams#)	reduction 
-[INFO] 9	)#)	move 
-[INFO] 10	block#{	reduction 
-[INFO] 11	{#{	move 
-[INFO] 12	blockItem#int	reduction 
-[INFO] 13	decl#int	reduction 
-[INFO] 14	varDecl#int	reduction 
-[INFO] 15	bType#int	reduction 
-[INFO] 16	int#int	move 
-[INFO] 17	varDef#IDN	reduction 
-[INFO] 18	IDN#IDN	move 
-[INFO] 19	argVarDef#,	reduction 
-[INFO] 20	argVarDecl#,	reduction 
-[INFO] 21	,#,	move 
-[INFO] 22	varDef#IDN	reduction 
-[INFO] 23	IDN#IDN	move 
-[INFO] 24	argVarDef#,	reduction 
-[INFO] 25	argVarDecl#,	reduction 
-[INFO] 26	,#,	move 
-[INFO] 27	varDef#IDN	reduction 
-[INFO] 28	IDN#IDN	move 
-[INFO] 29	argVarDef#;	reduction 
-[INFO] 30	argVarDecl#;	reduction 
-[INFO] 31	;#;	move 
-[INFO] 32	blockItem#IDN	reduction 
-[INFO] 33	stmt#IDN	reduction 
-[INFO] 34	exp#IDN	reduction 
-[INFO] 35	assignExp#IDN	reduction 
-[INFO] 36	eqExp#IDN	reduction 
-[INFO] 37	relExp#IDN	reduction 
-[INFO] 38	addExp#IDN	reduction 
-[INFO] 39	mulExp#IDN	reduction 
-[INFO] 40	unaryExp#IDN	reduction 
-[INFO] 41	IDN#IDN	move 
-[INFO] 42	callFunc#=	reduction 
-[INFO] 43	mulExpAtom#=	reduction 
-[INFO] 44	addExpAtom#=	reduction 
-[INFO] 45	relExpAtom#=	reduction 
-[INFO] 46	eqExpAtom#=	reduction 
-[INFO] 47	assignExpAtom#=	reduction 
-[INFO] 48	=#=	move 
-[INFO] 49	eqExp#INT	reduction 
-[INFO] 50	relExp#INT	reduction 
-[INFO] 51	addExp#INT	reduction 
-[INFO] 52	mulExp#INT	reduction 
-[INFO] 53	unaryExp#INT	reduction 
-[INFO] 54	primaryExp#INT	reduction 
-[INFO] 55	number#INT	reduction 
-[INFO] 56	INT#INT	move 
-[INFO] 57	mulExpAtom#;	reduction 
-[INFO] 58	addExpAtom#;	reduction 
-[INFO] 59	relExpAtom#;	reduction 
-[INFO] 60	eqExpAtom#;	reduction 
-[INFO] 61	assignExpAtom#;	reduction 
-[INFO] 62	;#;	move 
-[INFO] 63	blockItem#IDN	reduction 
-[INFO] 64	stmt#IDN	reduction 
-[INFO] 65	exp#IDN	reduction 
-[INFO] 66	assignExp#IDN	reduction 
-[INFO] 67	eqExp#IDN	reduction 
-[INFO] 68	relExp#IDN	reduction 
-[INFO] 69	addExp#IDN	reduction 
-[INFO] 70	mulExp#IDN	reduction 
-[INFO] 71	unaryExp#IDN	reduction 
-[INFO] 72	IDN#IDN	move 
-[INFO] 73	callFunc#=	reduction 
-[INFO] 74	mulExpAtom#=	reduction 
-[INFO] 75	addExpAtom#=	reduction 
-[INFO] 76	relExpAtom#=	reduction 
-[INFO] 77	eqExpAtom#=	reduction 
-[INFO] 78	assignExpAtom#=	reduction 
-[INFO] 79	=#=	move 
-[INFO] 80	eqExp#INT	reduction 
-[INFO] 81	relExp#INT	reduction 
-[INFO] 82	addExp#INT	reduction 
-[INFO] 83	mulExp#INT	reduction 
-[INFO] 84	unaryExp#INT	reduction 
-[INFO] 85	primaryExp#INT	reduction 
-[INFO] 86	number#INT	reduction 
-[INFO] 87	INT#INT	move 
-[INFO] 88	mulExpAtom#;	reduction 
-[INFO] 89	addExpAtom#;	reduction 
-[INFO] 90	relExpAtom#;	reduction 
-[INFO] 91	eqExpAtom#;	reduction 
-[INFO] 92	assignExpAtom#;	reduction 
-[INFO] 93	;#;	move 
-[INFO] 94	blockItem#IDN	reduction 
-[INFO] 95	stmt#IDN	reduction 
-[INFO] 96	exp#IDN	reduction 
-[INFO] 97	assignExp#IDN	reduction 
-[INFO] 98	eqExp#IDN	reduction 
-[INFO] 99	relExp#IDN	reduction 
-[INFO] 100	addExp#IDN	reduction 
-[INFO] 101	mulExp#IDN	reduction 
-[INFO] 102	unaryExp#IDN	reduction 
-[INFO] 103	IDN#IDN	move 
-[INFO] 104	callFunc#=	reduction 
-[INFO] 105	mulExpAtom#=	reduction 
-[INFO] 106	addExpAtom#=	reduction 
-[INFO] 107	relExpAtom#=	reduction 
-[INFO] 108	eqExpAtom#=	reduction 
-[INFO] 109	assignExpAtom#=	reduction 
-[INFO] 110	=#=	move 
-[INFO] 111	eqExp#INT	reduction 
-[INFO] 112	relExp#INT	reduction 
-[INFO] 113	addExp#INT	reduction 
-[INFO] 114	mulExp#INT	reduction 
-[INFO] 115	unaryExp#INT	reduction 
-[INFO] 116	primaryExp#INT	reduction 
-[INFO] 117	number#INT	reduction 
-[INFO] 118	INT#INT	move 
-[INFO] 119	mulExpAtom#;	reduction 
-[INFO] 120	addExpAtom#;	reduction 
-[INFO] 121	relExpAtom#;	reduction 
-[INFO] 122	eqExpAtom#;	reduction 
-[INFO] 123	assignExpAtom#;	reduction 
-[INFO] 124	;#;	move 
-[INFO] 125	blockItem#return	reduction 
-[INFO] 126	stmt#return	reduction 
-[INFO] 127	return#return	move 
-[INFO] 128	argExp#IDN	reduction 
-[INFO] 129	exp#IDN	reduction 
-[INFO] 130	assignExp#IDN	reduction 
-[INFO] 131	eqExp#IDN	reduction 
-[INFO] 132	relExp#IDN	reduction 
-[INFO] 133	addExp#IDN	reduction 
-[INFO] 134	mulExp#IDN	reduction 
-[INFO] 135	unaryExp#IDN	reduction 
-[INFO] 136	IDN#IDN	move 
-[INFO] 137	callFunc#+	reduction 
-[INFO] 138	mulExpAtom#+	reduction 
-[INFO] 139	addExpAtom#+	reduction 
-[INFO] 140	+#+	move 
-[INFO] 141	mulExp#IDN	reduction 
-[INFO] 142	unaryExp#IDN	reduction 
-[INFO] 143	IDN#IDN	move 
-[INFO] 144	callFunc#;	reduction 
-[INFO] 145	mulExpAtom#;	reduction 
-[INFO] 146	addExpAtom#;	reduction 
-[INFO] 147	relExpAtom#;	reduction 
-[INFO] 148	eqExpAtom#;	reduction 
-[INFO] 149	assignExpAtom#;	reduction 
-[INFO] 150	;#;	move 
-[INFO] 151	blockItem#}	reduction 
-[INFO] 152	}#}	move 
-[INFO] 153	compUnit#EOF	reduction 
-[INFO] 154	EOF#EOF	accept 
+[DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: INT  
+[DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: number  
+[DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: IDN callFunc  
+[INFO] Vts = { !=, $, %, (, ), *, +, ,, -, /, ;, <, <=, =, ==, >, >=, IDN, INT, const, int, return, void, {, },  } 
+[INFO] Vns = { addExp, addExpAtom, argConst, argExp, argFunctionF, argFunctionR, argVarDecl, argVarDef, assignExp, assignExpAtom, bType, block, blockItem, callFunc, compUnit, constDecl, constDef, constExp, constInitVal, decl, eqExp, eqExpAtom, exp, funcDef, funcFParam, funcFParams, funcRParam, funcRParams, funcType, initVal, mulExp, mulExpAtom, number, program, relExp, relExpAtom, stmt, unaryExp, varDecl, varDef,  } 
+[INFO] 1	program#int	reduction 
+[INFO] 2	compUnit#int	reduction 
+[INFO] 3	decl#int	reduction 
+[INFO] 4	varDecl#int	reduction 
+[INFO] 5	bType#int	reduction 
+[INFO] 6	int#int	move 
+[INFO] 7	varDef#IDN	reduction 
+[INFO] 8	IDN#IDN	move 
+[INFO] 9	argVarDef#=	reduction 
+[INFO] 10	=#=	move 
+[INFO] 11	initVal#INT	reduction 
+[INFO] 12	exp#INT	reduction 
+[INFO] 13	assignExp#INT	reduction 
+[INFO] 14	eqExp#INT	reduction 
+[INFO] 15	relExp#INT	reduction 
+[INFO] 16	addExp#INT	reduction 
+[INFO] 17	mulExp#INT	reduction 
+[INFO] 18	unaryExp#INT	reduction 
+[INFO] 19	number#INT	reduction 
+[INFO] 20	INT#INT	move 
+[INFO] 21	mulExpAtom#void	reduction 
+[INFO] 22	addExpAtom#void	reduction 
+[INFO] 23	relExpAtom#void	reduction 
+[INFO] 24	eqExpAtom#void	reduction 
+[INFO] 25	assignExpAtom#void	reduction 
+[INFO] 26	argVarDecl#void	reduction 
+[INFO] 27	compUnit#void	error 

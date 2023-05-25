@@ -11,12 +11,12 @@ int main()
 {
     LOG_ON("../log.txt")
 
-    // 输入NFA图并进行NFA确定化
-    FA *nfa = new FA("../nfa.txt");
-    nfa->run();
-    nfa->output();
-    // DFA最小化
-    nfa->minimizeDFA(closure{"0", "1", "2"}, closure{"3", "4", "5", "6"});
+    // // 输入NFA图并进行NFA确定化
+    // FA *nfa = new FA("../nfa.txt");
+    // nfa->run();
+    // nfa->output();
+    // // DFA最小化
+    // nfa->minimizeDFA(closure{"0", "1", "2"}, closure{"3", "4", "5", "6"});
 
     // 定义词法分析器并输入文件
     LexicalAnalyzer *lex = new LexicalAnalyzer("../test.txt");
@@ -24,8 +24,11 @@ int main()
     // 定义FirstFollow集并输入语法文件
     FirstFollowTable *fft = new FirstFollowTable("../grammar.txt");
     fft->run()->output();
+    fft->vtsDisplay();
+    fft->vnsDisplay();
     // 定义语法分析器
     ParseAnalyzer *par = new ParseAnalyzer(lex, fft);
     par->run()->output();
+    // par->analyzertableDisplay();
     LOG_OFF
 }

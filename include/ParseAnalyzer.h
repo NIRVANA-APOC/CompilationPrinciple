@@ -1,5 +1,6 @@
 #pragma once
 
+#include "FA.h"
 #include "LexicalAnalyzer.h"
 #include "FirstFollowTable.h"
 #include "Logging.h"
@@ -22,6 +23,10 @@ namespace par
      *@return 经过处理后的字符串
      */
     std::string checkStr(const std::string &s);
+
+    enum Status{
+        START, MOVE, REDUCTION, ACCEPT, ERROR,
+    };
 }
 
 /*!
@@ -46,9 +51,11 @@ private:
      *@brief 初始化语法分析表
      */
     void initAnalyzerTable();
-    void formatDisplay(const std::string &sym, const std::string &inp, const std::string &msg);
+    void formatDisplay(const std::string &sym, const std::string &inp, const par::Status &state);
 
 public:
+    void analyzertableDisplay();
+
     /*!
      *@brief 构造函数
      *@param lex 词法分析器对象

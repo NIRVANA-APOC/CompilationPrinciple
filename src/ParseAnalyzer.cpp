@@ -33,25 +33,18 @@ void ParseAnalyzer::initAnalyzerTable()
 
 ParseAnalyzer *ParseAnalyzer::run()
 {
+    using par::Status;
     if (!lex->has_run())
-    {
         lex->run();
-    }
     if (!fft->has_run())
-    {
         fft->run();
-    }
     this->initAnalyzerTable();
     using par::inputHandle, par::checkStr;
     std::stack<std::string> symbol;
     std::stack<std::string> input;
-    auto empty = [&]
-    { return symbol.empty() || input.empty(); };
     static bool _runover = false;
     if (_runover)
-    {
         return this;
-    }
 
     symbol.push("#");
     input.push("#");
@@ -61,68 +54,64 @@ ParseAnalyzer *ParseAnalyzer::run()
     for (const auto &l : this->lex->result)
     {
         if (l.first >= 100 || l.first < 0)
-        {
             continue;
-        }
         input.push(inputHandle(l));
     }
-
-    while (!empty())
+    auto state = Status::START;
+    auto sym = symbol.top();
+    auto inp = input.top();
+    while (state != Status::ERROR)
     {
-        auto sym = symbol.top();
-        auto inp = input.top();
+        formatDisplay(sym, inp, state);
+        sym = symbol.top();
+        inp = input.top();
+        symbol.pop();
 
-        if (checkStr(sym) == checkStr(inp))
+        if (sym == "#")
         {
-            if (checkStr(sym) == "EOF")
+            if (sym == inp)
             {
-                formatDisplay(sym, inp, "accept");
-                _runover = true;
+                state = Status::ACCEPT;
                 break;
+            }
+            else{
+                state = Status::ERROR;
+                break;
+            }
+        }
+        else if (fft->Vts.count(sym))
+        {
+            if (sym == inp)
+            {
+                state = Status::MOVE;
+                input.pop();
             }
             else
             {
-                if (empty())
-                {
-                    break;
-                }
-                formatDisplay(sym, inp, "move");
-                symbol.pop();
-                input.pop();
+                state = Status::ERROR;
+                break;
             }
         }
-        else if (checkStr(sym) == "EOF")
+        else if (analyzer_table[sym].count(inp))
         {
-            break;
+            state = Status::REDUCTION;
+            for (const auto &a : analyzer_table[sym][inp])
+            {
+                if (a == "$")
+                    continue;
+                symbol.push(a);
+            }
         }
         else
-        {
-            formatDisplay(sym, inp, "reduction");
-            if (symbol.empty())
-            {
-                break;
-            }
-            symbol.pop();
-            if (!analyzer_table[sym].count(inp))
-            {
-                break;
-            }
-            for (const auto &n : analyzer_table[sym][inp])
-            {
-                if (n == "$")
-                {
-                    continue;
-                }
-
-                symbol.push(checkStr(n));
-            }
-        }
+            state = Status::REDUCTION;
     }
-    if (!_runover)
+
+    if (state == Status::ERROR)
     {
-        formatDisplay(symbol.top(), input.top(), "error");
+        formatDisplay(symbol.top(), input.top(), Status::ERROR);
     }
     std::reverse(this->lex->result.begin(), this->lex->result.end());
+    _runover = true;
     return this;
 }
 
@@ -154,7 +143,7 @@ std::string par::inputHandle(const par::T &t)
     using lex::sym2syn;
     if (t.first == sym2syn("IDN", "UNKNOWN"))
     {
-        return std::string("Ident");
+        return std::string("IDN");
     }
     else if (t.first == sym2syn("INT", "UNKNOWN"))
     {
@@ -168,11 +157,7 @@ std::string par::inputHandle(const par::T &t)
 
 std::string par::checkStr(const std::string &s)
 {
-    if (s == "Ident")
-    {
-        return "IDN";
-    }
-    else if (s == "#")
+    if (s == "#")
     {
         return "EOF";
     }
@@ -182,12 +167,41 @@ std::string par::checkStr(const std::string &s)
     }
 }
 
-void ParseAnalyzer::formatDisplay(const std::string &sym, const std::string &inp, const std::string &msg)
+void ParseAnalyzer::formatDisplay(const std::string &sym, const std::string &inp, const par::Status &state)
 {
-    using par::checkStr;
+    using par::checkStr, par::Status;
     static int cnt = 0;
+    std::string msg;
+    switch (state)
+    {
+    case Status::START:
+        return;
+    case Status::REDUCTION:
+        msg = "reduction";
+        break;
+    case Status::MOVE:
+        msg = "move";
+        break;
+    case Status::ACCEPT:
+        msg = "accept";
+        break;
+    case Status::ERROR:
+        msg = "error";
+        break;
+    }
     ++cnt;
     std::string buf = std::to_string(cnt) + "\t" + checkStr(sym) + "#" + checkStr(inp) + "\t" + msg;
     Log(INFO, "%s", buf.data());
     _output_log.push_back(buf);
+}
+
+void ParseAnalyzer::analyzertableDisplay()
+{
+    for (const auto &[l, r] : this->analyzer_table)
+    {
+        for (const auto &[ll, rr] : r)
+        {
+            std::cout << l << " " << ll << " " << convert(rr) << " " << std::endl;
+        }
+    }
 }

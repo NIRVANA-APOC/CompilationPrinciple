@@ -83,11 +83,12 @@ lex::T LexicalAnalyzer::scan()
     else
     {
         token.token.clear();
-        if (isDigit(ch()) || ch() == '-')
+
+        if (isDigit(ch()) || std::set<char>{'-', '+', '!'}.count(ch()))
         {
-            if (ch() == '-')
+            if (!isDigit(ch()))
             {
-                token.append('-');
+                token.append(ch());
             }
             if (this->result.back().first != lex::sym2syn("INT"))
             {

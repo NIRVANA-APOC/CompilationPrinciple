@@ -72,6 +72,7 @@ ParseAnalyzer *ParseAnalyzer::run()
             if (sym == inp)
             {
                 state = Status::ACCEPT;
+                formatDisplay(sym, inp, state);
                 break;
             }
             else{

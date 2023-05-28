@@ -4,6 +4,7 @@
 #include <map>
 #include <array>
 #include <list>
+#include <set>
 #include "Logging.h"
 
 namespace lex

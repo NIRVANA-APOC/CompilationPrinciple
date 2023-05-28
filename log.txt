@@ -4,10 +4,6 @@
 [INFO] UNKONWN < LF > 
 [INFO] UNKONWN < CR > 
 [INFO] UNKONWN < LF > 
-[INFO] UNKONWN < CR > 
-[INFO] UNKONWN < LF > 
-[INFO] UNKONWN < CR > 
-[INFO] UNKONWN < LF > 
 [INFO] END 
 [DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: compUnit  
 [DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: decl compUnit  
@@ -81,18 +77,18 @@
 [DEBUG](E:/homework/CompilationPrinciple/final_homework/CompilationPrinciple/src/FirstFollowTable.cpp:165) form: IDN callFunc  
 [INFO] Vts = { !=, $, %, (, ), *, +, ,, -, /, ;, <, <=, =, ==, >, >=, IDN, INT, const, int, return, void, {, },  } 
 [INFO] Vns = { addExp, addExpAtom, argConst, argExp, argFunctionF, argFunctionR, argVarDecl, argVarDef, assignExp, assignExpAtom, bType, block, blockItem, callFunc, compUnit, constDecl, constDef, constExp, constInitVal, decl, eqExp, eqExpAtom, exp, funcDef, funcFParam, funcFParams, funcRParam, funcRParams, funcType, initVal, mulExp, mulExpAtom, number, program, relExp, relExpAtom, stmt, unaryExp, varDecl, varDef,  } 
-[INFO] 1	program#int	reduction 
-[INFO] 2	compUnit#int	reduction 
-[INFO] 3	decl#int	reduction 
-[INFO] 4	varDecl#int	reduction 
-[INFO] 5	bType#int	reduction 
-[INFO] 6	int#int	move 
-[INFO] 7	varDef#IDN	reduction 
-[INFO] 8	IDN#IDN	move 
-[INFO] 9	argVarDef#=	reduction 
+[INFO] 1	program#const	reduction 
+[INFO] 2	compUnit#const	reduction 
+[INFO] 3	decl#const	reduction 
+[INFO] 4	constDecl#const	reduction 
+[INFO] 5	const#const	move 
+[INFO] 6	bType#int	reduction 
+[INFO] 7	int#int	move 
+[INFO] 8	constDef#IDN	reduction 
+[INFO] 9	IDN#IDN	move 
 [INFO] 10	=#=	move 
-[INFO] 11	initVal#INT	reduction 
-[INFO] 12	exp#INT	reduction 
+[INFO] 11	constInitVal#INT	reduction 
+[INFO] 12	constExp#INT	reduction 
 [INFO] 13	assignExp#INT	reduction 
 [INFO] 14	eqExp#INT	reduction 
 [INFO] 15	relExp#INT	reduction 
@@ -101,10 +97,48 @@
 [INFO] 18	unaryExp#INT	reduction 
 [INFO] 19	number#INT	reduction 
 [INFO] 20	INT#INT	move 
-[INFO] 21	mulExpAtom#void	reduction 
-[INFO] 22	addExpAtom#void	reduction 
-[INFO] 23	relExpAtom#void	reduction 
-[INFO] 24	eqExpAtom#void	reduction 
-[INFO] 25	assignExpAtom#void	reduction 
-[INFO] 26	argVarDecl#void	reduction 
-[INFO] 27	compUnit#void	error 
+[INFO] 21	mulExpAtom#;	reduction 
+[INFO] 22	addExpAtom#;	reduction 
+[INFO] 23	relExpAtom#;	reduction 
+[INFO] 24	eqExpAtom#;	reduction 
+[INFO] 25	assignExpAtom#;	reduction 
+[INFO] 26	argConst#;	reduction 
+[INFO] 27	;#;	move 
+[INFO] 28	compUnit#void	reduction 
+[INFO] 29	funcDef#void	reduction 
+[INFO] 30	funcType#void	reduction 
+[INFO] 31	void#void	move 
+[INFO] 32	IDN#IDN	move 
+[INFO] 33	(#(	move 
+[INFO] 34	funcFParams#)	reduction 
+[INFO] 35	)#)	move 
+[INFO] 36	block#{	reduction 
+[INFO] 37	{#{	move 
+[INFO] 38	blockItem#return	reduction 
+[INFO] 39	stmt#return	reduction 
+[INFO] 40	return#return	move 
+[INFO] 41	argExp#IDN	reduction 
+[INFO] 42	exp#IDN	reduction 
+[INFO] 43	assignExp#IDN	reduction 
+[INFO] 44	eqExp#IDN	reduction 
+[INFO] 45	relExp#IDN	reduction 
+[INFO] 46	addExp#IDN	reduction 
+[INFO] 47	mulExp#IDN	reduction 
+[INFO] 48	unaryExp#IDN	reduction 
+[INFO] 49	IDN#IDN	move 
+[INFO] 50	callFunc#*	reduction 
+[INFO] 51	mulExpAtom#*	reduction 
+[INFO] 52	*#*	move 
+[INFO] 53	unaryExp#INT	reduction 
+[INFO] 54	number#INT	reduction 
+[INFO] 55	INT#INT	move 
+[INFO] 56	mulExpAtom#;	reduction 
+[INFO] 57	addExpAtom#;	reduction 
+[INFO] 58	relExpAtom#;	reduction 
+[INFO] 59	eqExpAtom#;	reduction 
+[INFO] 60	assignExpAtom#;	reduction 
+[INFO] 61	;#;	move 
+[INFO] 62	blockItem#}	reduction 
+[INFO] 63	}#}	move 
+[INFO] 64	compUnit#EOF	reduction 
+[INFO] 65	EOF#EOF	accept 

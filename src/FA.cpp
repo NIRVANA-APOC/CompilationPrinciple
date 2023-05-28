@@ -1,13 +1,13 @@
 #include "FA.h"
 
-void FA::read()
+FA* FA::read(bool is_dfa)
 {
     std::string buf;
     std::ifstream fin(this->input_filepath);
     if (!fin.is_open())
     {
         Log(ERR, "file \"%s\" not found.", input_filepath.data());
-        return;
+        return this;
     }
 
     while (getline(fin, buf))
@@ -20,6 +20,17 @@ void FA::read()
         this->states.insert(y);
         this->syms.insert(cond);
     }
+
+    if(is_dfa){
+        for(const auto &[l, r]: this->nfa){
+            for(const auto &[ll, rr]: r){
+                for(const auto &c: rr){
+                    this->matrix[l][c] = ll;
+                }
+            }
+        }
+    }
+    return this;
 }
 
 const closure FA::getSingleClosure(const closure &S, const std::string &sym)
@@ -81,7 +92,7 @@ const closure FA::Ix(const closure &I, std::string x)
     return getEpsilonClosure(getSingleClosure(I, x));
 }
 
-void FA::determinNFA()
+FA* FA::determinNFA()
 {
     std::vector<closure> open;
     std::set<closure> close;
@@ -120,14 +131,16 @@ void FA::determinNFA()
         this->states.insert(v);
     }
     this->syms.erase("$");
-
     for (const auto &[l, r] : _matrix)
     {
         for (const auto &[ll, rr] : r)
         {
             this->matrix[dict[l]][ll] = dict[rr];
+            printf("%s, %s, %s\n", convert(l).data(), ll.data(), convert(rr).data());
         }
     }
+
+    return this;
 }
 
 const std::pair<closure, closure> FA::move(const closure &S, const std::string &sym)
@@ -148,7 +161,7 @@ const std::pair<closure, closure> FA::move(const closure &S, const std::string &
     return ans;
 }
 
-void FA::minimizeDFA(const closure &start, const closure &end)
+FA* FA::minimizeDFA(const closure &start, const closure &end)
 {
 
     const auto &_ = [this](const closure &S)
@@ -192,18 +205,18 @@ void FA::minimizeDFA(const closure &start, const closure &end)
     ans.insert(_start.begin(), _start.end());
     const auto &_end = _(end);
     ans.insert(_end.begin(), _end.end());
-    std::cout << "ans size is: " << ans.size() << std::endl;
-    for (const auto &a : ans)
-    {
-        std::cout << convert(a) << std::endl;
-    }
+    // std::cout << "ans size is: " << ans.size() << std::endl;
+    // for (const auto &a : ans)
+    // {
+    //     std::cout << convert(a) << std::endl;
+    // }
 
     std::map<std::string, std::string> dict;
-    auto get_n = []
-    {static int n = 0; return std::to_string(n++); };
+    auto get_n = []{static int n = 0; return std::to_string(n++); };
 
     for (const auto &a : ans)
     {
+        printf("%s\n", convert(a).data());
         auto t = get_n();
         for (const auto &c : a)
         {
@@ -219,19 +232,16 @@ void FA::minimizeDFA(const closure &start, const closure &end)
         }
     }
 
-    for (const auto &[l, r] : this->dfa)
-    {
-        for (const auto &[ll, rr] : r)
-        {
-            printf("%s, %s, %s\n", l.data(), ll.data(), rr.data());
+    for(const auto &[l, r]: dict){
+        printf("%s: %s\n", l.data(), r.data());
+    }
+
+    for(const auto &[l, r]: this->dfa){
+        for(const auto &[ll, rr]: r){
+            this->result[l][rr].insert(ll);
         }
     }
-}
 
-FA *FA::run()
-{
-    read();
-    determinNFA();
     return this;
 }
 
@@ -248,11 +258,12 @@ FA *FA::output()
         Log(INFO, "输出文件打开失败");
         return this;
     }
-    for (const auto &[l, r] : matrix)
+
+    for (const auto &[l, r] : this->result)
     {
         for (const auto &[ll, rr] : r)
         {
-            fprintf(fout, "%s, %s, %s\n", l.data(), ll.data(), rr.data());
+            fprintf(fout, "%s, %s, %s\n", l.data(), ll.data(), convert(rr).data());
         }
     }
     fclose(fout);

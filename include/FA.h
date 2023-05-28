@@ -33,8 +33,9 @@ private:
     closure syms;
     std::map<std::string, std::map<std::string, closure>> nfa;
     std::map<std::string, std::map<std::string, std::string>> dfa;
+    std::map<std::string, std::map<std::string, closure>> result;
 
-    void read();
+    
     const closure getSingleClosure(const closure &S, const std::string &sym);
     const closure getEpsilonClosure(const closure &S);
     const closure Ix(const closure &I, std::string x);
@@ -45,8 +46,8 @@ public:
     std::map<std::string, std::map<std::string, std::string>> matrix;
     closure states;
     explicit FA(std::string input_filepath, std::string output_filepath = "FA.txt") : input_filepath(input_filepath), output_filepath(output_filepath) {}
-    void determinNFA();
-    void minimizeDFA(const closure &start, const closure &end);
-    FA *run();
+    FA* determinNFA();
+    FA* minimizeDFA(const closure &start, const closure &end);
+    FA* read(bool is_dfa=false);
     FA *output();
 };
